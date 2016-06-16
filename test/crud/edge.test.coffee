@@ -47,6 +47,7 @@ describe 'crud edge:', () ->
 
         done()
 
+
   it 'findById', (done) ->
     User.create [{name: 'Matteo1'}, {name: 'Antonio1'}], (err, user) ->
       should.not.exist(err)
@@ -63,5 +64,35 @@ describe 'crud edge:', () ->
           should.not.exist(err)
           should.exist(f)
           f.id.should.equal(friend.id)
+
+          done()
+
+  it 'find', (done) ->
+    # User.create [{name: 'Matteo2'}, {name: 'Antonio2'}], (err, user) ->
+    #   should.not.exist(err)
+    #   user.should.have.length(2)
+    Friend.create {_from: 'User/EDGE_FROM', _to: 'User/EDGE_TO1', label: 'friend'}, (err, friend) ->
+      should.not.exist(err)
+      should.exist(friend)
+      should.exist(friend.id)
+      should.exist(friend._id)
+      friend._from.should.equal('User/EDGE_FROM')
+      friend._to.should.equal('User/EDGE_TO1')
+      friend.label.should.equal('friend')
+      Friend.create {_from: 'User/EDGE_FROM', _to: 'User/EDGE_TO2', label: 'friend'}, (err, friend) ->
+        should.not.exist(err)
+        should.exist(friend)
+        should.exist(friend.id)
+        should.exist(friend._id)
+        friend._from.should.equal('User/EDGE_FROM')
+        friend._to.should.equal('User/EDGE_TO2')
+        friend.label.should.equal('friend')
+        Friend.find {where : {_from: 'User/EDGE_FROM', _to: 'User/EDGE_TO1', label: 'friend'}}, (err, f) ->
+          should.not.exist(err)
+          should.exist(f)
+          f.should.be.instanceof(Array).and.have.lengthOf(1);
+          f[0]._from.should.equal('User/EDGE_FROM')
+          f[0]._to.should.equal('User/EDGE_TO1')
+          f[0].label.should.equal('friend')
 
           done()
