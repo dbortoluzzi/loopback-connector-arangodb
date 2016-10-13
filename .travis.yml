@@ -12,7 +12,7 @@ before_install:
 #- docker run --name arangodb -e ARANGO_NO_AUTH=1 -p 8529:8529 -d arangodb/arangodb
 #- docker stop arangodb2.8.1
   - docker pull arangodb/arangodb:2.8.1
-  - docker run --name arangodb2.8.1 -p 8529:8529 -P arangodb/arangodb:2.8.1 "standalone --disable-authentication"
+  - docker run --name arangodb2.8.1 -p 8529:8529 -P arangodb/arangodb:2.8.1 'standalone --disable-authentication'
 
 install:
   - npm install
