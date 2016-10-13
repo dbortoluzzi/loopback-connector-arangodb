@@ -8,8 +8,11 @@ node_js:
   - "4.4.2"
 
 before_install:
+#- docker pull arangodb/arangodb
+#- docker run --name arangodb -e ARANGO_NO_AUTH=1 -p 8529:8529 -d arangodb/arangodb
 - docker pull arangodb/arangodb:2.8.1
-- docker run -e ARANGO_NO_AUTH=1 -p 8529:8529 -d arangodb/arangodb:2.8.1
+- docker run --name arangodb2.8.1 -p 8529:8529 -d arangodb/arangodb:2.8.1 standalone --disable-authentication
+- docker stop arangodb2.8.1
 
 install:
   - npm install
